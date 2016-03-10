@@ -1,0 +1,72 @@
+<html>
+<head>
+<title>StockTalk|Login</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+</head>
+<body>
+	<br>
+    <br>
+    <br>
+
+    <div class = "row">
+        <div class="container col-md-6 col-md-offset-3">
+            <div class="jumbotron">
+                <h1 align="center" >Login</h1>
+                <br>
+                <div class = "form-group">
+                    <form id="login" method="post" action="" align = "center"  >
+    	               <input placeholder="Username"id="username"type="text" class="form-control text-center" align="center"  style="font-size:16pt;" ></input> <br>
+    	               <input placeholder="Passsword" id="password"  type="password"class="form-control text-center" align="center" style="font-size:16pt;"></input>
+                        <br> <button id="submit" class="btn btn-primary btn-block" onclick="checkForm(event) "><h4>Login<h4></button>
+                        <br> <button id="register" class="btn btn-primary btn-block" onclick="register.html"><h4>Register<h4></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+function checkForm(event) {
+    event.preventDefault();
+    var x = document.forms['login'];
+    //alert(x.elements['username'].value);     
+    var username = "";
+    var password = "";
+    username = x.elements['username'].value;
+    password=x.elements['password'].value;
+    var errors = [];
+if (password.length < 8) {
+    errors.push("Your password must be at least 8 characters") ;
+}
+if (password.search(/[a-z]/i) < 0) {
+    errors.push("Your password must contain at least one letter."); 
+}
+if (password.search(/[0-9]/) < 0) {
+    errors.push("Your password must contain at least one digit.") ;
+}
+if (errors.length > 0) {
+    alert(errors.join("\n"));
+}
+else
+{
+    data={
+        'username':username,
+        'password':password,
+    };
+    $(document).ready(function(){     
+    $.post('login.php',data,function (response) {
+        console.log(response);
+        if(response=="true") {
+        window.location='dash.html'; 
+        }
+        else
+        {
+            alert("Invalid username password combination");
+        }      
+});
+});
+}
+}
+</script>
+</body>
+</html>

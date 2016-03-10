@@ -1,0 +1,156 @@
+<html>
+<head>
+<title>StockTalk|Commodities</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<style>
+    .top {
+    position:absolute;
+    left:0; right:0;
+    height:120px;
+    color:rgb(51, 122, 183);
+    }
+    .left {
+    position:absolute;
+    left:2%; top:20%; bottom: 0;
+    width: 15%;
+    background-color: white;
+    }
+    .main {
+    position: absolute;
+    left:22%; top:20%; right:300px; bottom:0;
+    }
+    .list-group {
+        color: black;
+        font-weight:bolder;
+    }
+    .btn-block {
+        font-weight:bolder;
+        display: block;
+        background-color: #FFFFFF;
+        border-color: rgb(51, 122, 183);
+        color: rgb(51, 122, 183);
+    }
+    .btn-block:hover {
+        background-color: #337ab7;
+        color:white;
+    }
+    #addAsset{
+        display:none;
+    }
+    .panel {
+        font-weight:bolder; 
+        margin: 0px !important;
+        border-radius: 0 !important;
+        border-color: #FFFFFF !important;
+        color: rgb(51, 122, 183) !important;
+
+    }
+    .panel-body {
+        //color: #585860;
+    }
+    .panel-heading {
+        border-radius: 0 !important;
+        background-color: #C5C5D8 !important;
+
+    }
+    .glyphicon-trash {
+        opacity: 0.3;
+        float:right;
+    }
+    .glyphicon-trash:hover {
+        opacity: 1;
+        color:#E6E6E6;
+
+    }
+
+    .rotate {
+    transform: rotate(-180deg);
+    /*transform: rotate(180deg);*/
+    transition: .3s;
+    }
+    ..rotate-back {
+    transform: rotate(-180deg);
+    /*transform: rotate(180deg);*/
+    transition: .3s;
+    }
+    /*.rotate {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+}*/
+</style>
+</head>
+<body>
+<div class="top">
+        <h1 align="center"><img src="stocktalk.png" width="150" height="80" /></h1>
+</div>
+<div class="left">
+    <div class="list-group">
+        <a href="dash.html" class="list-group-item"><span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span>&nbsp &nbsp &nbsp Portfolio</a>
+        <a href="#" class="list-group-item"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp &nbsp &nbsp Watchlist</a>
+        <a href="indices.html" class="list-group-item" ><span class="glyphicon glyphicon-stats" aria-hidden="true"></span>&nbsp &nbsp &nbsp Indices</a> 
+        <a href="commodities.html" class="list-group-item active"><span class="glyphicon glyphicon-leaf" aria-hidden="true"></span>&nbsp &nbsp &nbsp commodities</a>
+        <a href="index.html" class="list-group-item" id="comclicked"><span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp &nbsp &nbsp Logout</a>
+    </div>
+</div>
+<div class="main">
+  <br>        
+    <div class="row">
+        <div class="panel-group" id="currentlist">
+        
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    
+    window.onload = function() {
+        var list={};var prices,uri, newlist;
+        $.ajax({
+            type:"GET",
+            url:"https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quoteslist%20where%20symbol%20IN%20('BZX15.NYM'%2C'NGX15.NYM'%2C'GCV15.CMX')&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=",
+            dataType:"json",
+            success: function(response) {
+            var i,data;
+            data=response.query.results.quote;
+            for(i=0;i<data.length;i++)
+            {
+                var currentprice,color,price,name,scrip,change;
+                        if(i===0)
+                        name="Brent Crude";
+                    	else
+                        if(i==1)
+                        name="Natural Gas";
+                        else
+                    	if(i==2)
+                    	name="Gold";
+                        scrip=data[i].symbol;
+                var x=document.getElementById('currentlist');
+                    var newdiv = document.createElement('div');
+                    var heading=document.createElement('div');
+                    var content=document.createElement('div');
+                    newdiv.className = 'panel panel-primary';
+                    content.className = 'panel-body';
+                    heading.className = 'panel-heading';
+                    currentprice = data[i].LastTradePriceOnly;
+                    var arrow,price; 
+                    change=data[i].Change;
+                    price=data[i].Open;
+                if(change>0){
+                    color='#009900';
+                    arrow='up'; }
+                else {
+                    color='#FF0000';
+                    arrow='down'; }
+                    heading.innerHTML = name;
+                content.innerHTML = 'Code: &nbsp'+scrip+'<br><br>  Price : '+'<span style="color:'+color+';">'+currentprice+'</span><span style="float:right; color:'+color+';"><span>'+change+' </span><span class="glyphicon glyphicon-arrow-'+arrow+'" aria-hidden="true"></span></span><br><br><div class=:"row" align="center"></div>';
+                newdiv.appendChild(heading);
+                newdiv.appendChild(content);
+                x.appendChild(newdiv);
+                        }
+                        
+                     }
+            });
+		}
+</script>
+</body>
+</html>               

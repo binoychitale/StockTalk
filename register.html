@@ -1,0 +1,78 @@
+<html>
+<head>
+	<title>StockTalk|Register</title>
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+</head>
+<body>
+	<div id="hidden_form_container" style="display:none;"></div>
+    <div class = "row">
+        <div class="container col-md-6 col-md-offset-3">
+            <div class="jumbotron">
+                <h1 align="center" >Register</h1>
+                <br>
+                <div class = "form-group">
+                    <form id="register" method="post" action="" align = "center"  >
+    	               <input placeholder="Username"id="username"type="text" class="form-control text-center" align="center"  style="font-size:12pt;" ></input> <br>
+    	               <input placeholder="Password" id="password"  type="password"class="form-control text-center" align="center" style="font-size:12pt;"></input><br>
+                       <input placeholder="Confirm Password" id="cpassword"  type="password"class="form-control text-center" align="center" style="font-size:12pt;"></input>
+                        <br> <button id="submit" class="btn btn-primary btn-block" onclick="checkForm(event) "><h4>Register<h4></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+     <script type="text/javascript">
+     var username = "";
+     var password = "";
+     var errors=[];
+     function checkForm(event) {
+        event.preventDefault();
+        var x = document.forms['register'];
+    console.log("here");        
+    username = x.elements['username'].value;
+    password=x.elements['password'].value;
+    cpassword=x.elements['cpassword'].value;
+    if (password.length < 8) {
+        errors.push("Your password must be at least 8 characters");
+    }
+    if (password.search(/[a-z]/i) < 0) {
+        errors.push("Your password must contain at least one letter.");
+    }
+    if (password.search(/[0-9]/) < 0) {
+        errors.push("Your password must contain at least one digit.");
+    }
+    if (password != cpassword) {
+        errors.push("Passwords do not match.");
+    }
+    if (errors.length > 0) {
+        alert(errors.join("\n"));
+    }
+    else {
+        postRefreshPage();
+        }
+    }
+    function postRefreshPage () {
+        var theForm;
+        // Start by creating a <form>
+        theForm = document.createElement('form');
+        theForm.action = 'register.php';
+        theForm.method = 'post';
+        // Next create the <input>s in the form and give them names and values
+        newInput1 = document.createElement('input');
+        newInput1.type = 'hidden';
+        newInput1.name = 'username';
+        newInput1.value = username;
+        newInput2 = document.createElement('input');
+        newInput2.type = 'hidden';
+        newInput2.name = 'password';
+        newInput2.value = password;
+        // Now put everything togedther...
+        theForm.appendChild(newInput1);
+        theForm.appendChild(newInput2);
+        // ...and it to the DOM...
+        document.getElementById('hidden_form_container').appendChild(theForm);
+        theForm.submit();
+}
+</script>
+</body>
+</html>
